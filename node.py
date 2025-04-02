@@ -2,6 +2,8 @@ import copy
 
 import numpy as np
 
+from gini_utils import gini_gain
+
 
 class Node:
     def __init__(self):
@@ -16,6 +18,17 @@ class Node:
         best_idx = 0
 
         # TODO find position of best data split
+        for split in possible_splits:
+            left_part = y[:split + 1]
+            right_part = y[split + 1:]
+            left_pos = np.sum(left_part == 1)
+            left_neg = np.sum(left_part == 0)
+            right_pos = np.sum(right_part == 1)
+            right_neg = np.sum(right_part == 0)
+            calculated_gini_gain = gini_gain(left_pos, left_neg, right_pos, right_neg)
+            if calculated_gini_gain > best_gain:
+                best_gain = calculated_gini_gain
+                best_idx = split
 
         return best_idx, best_gain
 
