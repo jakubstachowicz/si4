@@ -49,7 +49,15 @@ class Node:
 
         # TODO implement feature selection
 
-        for d in range(X.shape[1]):
+        if feature_subset is None:
+            # brak feature subset - wybieram wszystkie features
+            select = range(X.shape[1])
+        else:
+            # wybieram losowo #feature_subset-razy features
+            select = np.random.choice(X.shape[1], feature_subset, replace=False)
+
+        # for d in range(X.shape[1]):
+        for d in select:
             order = np.argsort(X[:, d])
             y_sorted = y[order]
             possible_splits = self.find_possible_splits(X[order, d])
